@@ -11,6 +11,8 @@ import { PartidoPoliticoModule } from './partido-politico/partido-politico.modul
 import { CandidatoModule } from './candidato/candidato.module';
 import { CandidaturaModule } from './candidatura/candidatura.module';
 import { UploadModule } from './upload/upload.module';
+import { RecintoModule } from './recinto/recinto.module';
+import { MesaModule } from './mesa/mesa.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { UploadModule } from './upload/upload.module';
     CandidatoModule,
     CandidaturaModule,
     UploadModule,
+    RecintoModule,
+    MesaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
