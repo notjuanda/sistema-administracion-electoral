@@ -14,6 +14,8 @@ import { UploadModule } from './upload/upload.module';
 import { RecintoModule } from './recinto/recinto.module';
 import { MesaModule } from './mesa/mesa.module';
 import { AsignacionVotanteMesaModule } from './asignacion-votante-mesa/asignacion-votante-mesa.module';
+import { JuradosModule } from './jurados/jurados.module';
+import { PapeletasModule } from './papeletas/papeletas.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { AsignacionVotanteMesaModule } from './asignacion-votante-mesa/asignacio
     RecintoModule,
     MesaModule,
     AsignacionVotanteMesaModule,
+    JuradosModule,
+    PapeletasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
