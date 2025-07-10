@@ -6,14 +6,19 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilitar validación global
+  // Configurar CORS
+  app.enableCors({
+    origin: ['http://localhost:5173', 'https://localhost:5173'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
     transform: true,
   }));
 
-  // Configuración de Swagger
   const config = new DocumentBuilder()
     .setTitle('Sistema de Administración Electoral')
     .setDescription('API para la gestión de elecciones, secciones, cargos y candidaturas')
