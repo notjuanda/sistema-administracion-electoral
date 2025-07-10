@@ -13,6 +13,7 @@ import { CandidaturaModule } from './candidatura/candidatura.module';
 import { UploadModule } from './upload/upload.module';
 import { RecintoModule } from './recinto/recinto.module';
 import { MesaModule } from './mesa/mesa.module';
+import { AsignacionVotanteMesaModule } from './asignacion-votante-mesa/asignacion-votante-mesa.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MesaModule } from './mesa/mesa.module';
     UploadModule,
     RecintoModule,
     MesaModule,
+    AsignacionVotanteMesaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
