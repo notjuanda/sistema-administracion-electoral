@@ -13,7 +13,8 @@ async function bootstrap() {
   const allowedOrigins = [
     process.env.URL_FRONT_ADMIN_ELECTORAL,
     process.env.URL_FRONT_SUPER_ADMIN,
-    process.env.URL_FRONT_JURADO
+    process.env.URL_FRONT_JURADO,
+    process.env.URL_FRONT_PADRON,
   ].filter(Boolean) as string[];
   app.enableCors({
     origin: allowedOrigins,

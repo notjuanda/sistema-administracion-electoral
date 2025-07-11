@@ -16,8 +16,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new Error('Unauthorized');
     }
-    if (user.rol !== 'admin_elecciones' && user.rol !== 'super_admin') {
-      throw new Error('Forbidden: Solo los administradores de elecciones pueden acceder a este recurso');
+    if (user.rol !== 'admin_elecciones' && user.rol !== 'super_admin' && user.rol !== 'admin_padron') {
+      throw new Error('Forbidden: Solo los administradores de elecciones o padrón pueden acceder a este recurso');
     }
     return user;
   }
