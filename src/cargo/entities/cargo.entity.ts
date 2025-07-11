@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { EstadoCargo } from '../../common/enums/estado-cargo.enum';
+import { Seccion } from '../../seccion/entities/seccion.entity';
 
 @Entity('cargos')
 export class Cargo {
@@ -24,20 +25,9 @@ export class Cargo {
   })
   estado: EstadoCargo;
 
-  @ApiProperty({ description: 'Secciones que afecta este cargo', type: 'array' })
-  @ManyToMany('Seccion')
-  @JoinTable({
-    name: 'cargos_secciones',
-    joinColumn: {
-      name: 'cargo_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'seccion_id',
-      referencedColumnName: 'id'
-    }
-  })
-  secciones: any[];
+  @ApiProperty({ description: 'Sección que afecta este cargo', type: () => Seccion })
+  @ManyToOne(() => Seccion, { eager: true, nullable: false })
+  seccion: Seccion;
 
   @ApiProperty({ description: 'Fecha de creación' })
   @CreateDateColumn()

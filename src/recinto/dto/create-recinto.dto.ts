@@ -18,4 +18,8 @@ export class CreateRecintoDto {
     @ApiProperty({ example: -63.1821, description: 'Longitud del recinto' })
     @IsNumber()
     longitud: number;
+
+    @ApiProperty({ example: 1, description: 'ID de la sección a la que pertenece el recinto' })
+    @IsNumber()
+    seccionId: number;
 } 

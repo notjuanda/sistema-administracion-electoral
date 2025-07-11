@@ -21,4 +21,9 @@ export class UpdateRecintoDto {
     @IsOptional()
     @IsNumber()
     longitud?: number;
+
+    @ApiPropertyOptional({ example: 1, description: 'ID de la sección a la que pertenece el recinto' })
+    @IsOptional()
+    @IsNumber()
+    seccionId?: number;
 } 

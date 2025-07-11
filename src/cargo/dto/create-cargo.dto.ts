@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsNumber } from 'class-validator';
 import { EstadoCargo } from '../../common/enums/estado-cargo.enum';
 
 export class CreateCargoDto {
@@ -21,12 +21,11 @@ export class CreateCargoDto {
     @IsEnum(EstadoCargo)
     estado?: EstadoCargo;
 
-    @ApiPropertyOptional({ 
-        description: 'IDs de las secciones que afecta este cargo',
-        type: [Number],
-        example: [1, 2, 3]
+    @ApiProperty({ 
+        description: 'ID de la sección que afecta este cargo',
+        type: Number,
+        example: 1
     })
-    @IsOptional()
-    @IsArray()
-    seccionIds?: number[];
+    @IsNumber()
+    seccionId: number;
 } 

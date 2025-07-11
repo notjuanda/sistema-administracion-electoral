@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Seccion } from '../../seccion/entities/seccion.entity';
 
 @Entity()
 export class Recinto {
@@ -22,4 +23,12 @@ export class Recinto {
     @ApiProperty({ example: -63.1821, description: 'Longitud del recinto' })
     @Column('float')
     longitud: number;
+
+    @ManyToOne(() => Seccion)
+    @JoinColumn({ name: 'seccionId' })
+    seccion: Seccion;
+
+    @ApiProperty({ example: 1, description: 'ID de la sección a la que pertenece el recinto' })
+    @Column()
+    seccionId: number;
 } 
