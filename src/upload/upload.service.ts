@@ -12,7 +12,7 @@ import { fileTypeFromBuffer } from 'file-type';
 @Injectable()
 export class UploadService {
     private readonly uploadsDir = 'uploads';
-    private readonly maxFileSize = 5 * 1024 * 1024; // 5MB
+    private readonly maxFileSize = 5 * 1024 * 1024;
     private readonly allowedMimeTypes = [
         'image/jpeg',
         'image/jpg',
@@ -50,17 +50,14 @@ export class UploadService {
     }
 
     private async validateFile(file: Express.Multer.File): Promise<void> {
-        // Validar tamaño
         if (file.size > this.maxFileSize) {
             throw new BadRequestException(`El archivo excede el tamaño máximo de ${this.maxFileSize / (1024 * 1024)}MB`);
         }
 
-        // Validar tipo MIME
         if (!this.allowedMimeTypes.includes(file.mimetype)) {
             throw new BadRequestException(`Tipo de archivo no permitido. Tipos permitidos: ${this.allowedMimeTypes.join(', ')}`);
         }
 
-        // Validar contenido del archivo
         try {
             const fileType = await fileTypeFromBuffer(file.buffer);
             if (!fileType || !this.allowedMimeTypes.includes(fileType.mime)) {
@@ -76,23 +73,18 @@ export class UploadService {
         category: string,
         description?: string
     ): Promise<UploadFileDto> {
-        // Validar archivo
         await this.validateFile(file);
 
-        // Crear directorio de categoría
         const categoryPath = await this.ensureCategoryDirectory(category);
 
-        // Generar nombre único
         const filename = this.generateUniqueFilename(file.originalname);
         const filePath = path.join(categoryPath, filename);
         const relativePath = path.join(category, filename);
         const url = `/${this.uploadsDir}/${relativePath}`;
 
         try {
-            // Guardar archivo en disco
             await fs.writeFile(filePath, file.buffer);
 
-            // Guardar información en base de datos
             const uploadedFile = this.uploadedFileRepository.create({
                 originalName: file.originalname,
                 filename,
@@ -118,7 +110,6 @@ export class UploadService {
                 createdAt: savedFile.createdAt,
             };
         } catch (error) {
-            // Si hay error, eliminar archivo del disco si se creó
             try {
                 await fs.remove(filePath);
             } catch (removeError) {
@@ -136,11 +127,9 @@ export class UploadService {
         }
 
         try {
-            // Eliminar archivo del disco
             const fullPath = path.join(this.uploadsDir, file.path);
             await fs.remove(fullPath);
 
-            // Eliminar registro de la base de datos
             await this.uploadedFileRepository.remove(file);
 
             return {

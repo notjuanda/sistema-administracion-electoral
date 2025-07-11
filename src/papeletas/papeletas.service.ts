@@ -23,13 +23,11 @@ export class PapeletasService {
     ) {}
 
     async generarPapeletaPorSeccion(seccionId: number) {
-        // Verificar que la sección existe
         const seccion = await this.seccionRepo.findOne({ where: { id: seccionId } });
         if (!seccion) {
         throw new NotFoundException('Sección no encontrada');
         }
 
-        // Obtener cargos que afectan a esta sección (usando la relación many-to-many)
         const cargos = await this.cargoRepo
         .createQueryBuilder('cargo')
         .innerJoin('cargo.secciones', 'seccion')
@@ -40,14 +38,12 @@ export class PapeletasService {
         throw new NotFoundException('No hay cargos definidos para esta sección');
         }
 
-        // Generar estructura de papeleta
         const papeleta: any = {
         seccionId: seccion.id,
         seccionNombre: seccion.nombre,
         cargos: []
         };
 
-        // Para cada cargo, obtener las candidaturas y candidatos
         for (const cargo of cargos) {
         const candidaturas = await this.candidaturaRepo.find({
             where: { cargoId: cargo.id },
@@ -57,7 +53,6 @@ export class PapeletasService {
         const candidaturasConCandidatos: any[] = [];
 
         for (const candidatura of candidaturas) {
-            // Obtener candidatos usando los IDs almacenados en candidatura
             const candidatos = await this.candidatoRepo.findByIds(candidatura.candidatoIds);
 
             candidaturasConCandidatos.push({

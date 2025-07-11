@@ -26,11 +26,9 @@ export class SeccionService {
     async create(createSeccionDto: CreateSeccionDto): Promise<Seccion | null> {
         const { puntos, ...seccionData } = createSeccionDto;
         
-        // Crear la sección
         const seccion = this.seccionRepository.create(seccionData);
         const savedSeccion = await this.seccionRepository.save(seccion);
         
-        // Crear los puntos de la sección
         if (puntos && puntos.length > 0) {
             const puntosSeccion = puntos.map(punto => 
                 this.puntoSeccionRepository.create({
@@ -47,15 +45,11 @@ export class SeccionService {
     async update(id: number, updateSeccionDto: UpdateSeccionDto): Promise<Seccion | null> {
         const { puntos, ...seccionData } = updateSeccionDto;
         
-        // Actualizar la sección
         await this.seccionRepository.update(id, seccionData);
         
-        // Actualizar los puntos si se proporcionan
         if (puntos) {
-            // Eliminar puntos existentes
             await this.puntoSeccionRepository.delete({ seccionId: id });
             
-            // Crear nuevos puntos
             if (puntos.length > 0) {
                 const puntosSeccion = puntos.map(punto => 
                     this.puntoSeccionRepository.create({

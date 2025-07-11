@@ -46,7 +46,6 @@ export class CandidatoService {
         const candidato = await this.findOne(id);
         let fotoUrl: string | undefined = undefined;
         if (file) {
-            // Si hay foto anterior, eliminarla
             if (candidato?.fotoUrl) {
                 try {
                     await this.uploadService.deleteFileByUrl(candidato.fotoUrl);

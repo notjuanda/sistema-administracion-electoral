@@ -12,7 +12,7 @@ export class CargoService {
     private cargoRepository: Repository<Cargo>,
   ) {}
 
-  // TODO: Implementar métodos CRUD
+  
   async findAll(): Promise<Cargo[]> {
     return this.cargoRepository.find();
   }

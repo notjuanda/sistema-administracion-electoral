@@ -12,7 +12,7 @@ export class EleccionService {
     private eleccionRepository: Repository<Eleccion>,
   ) {}
 
-  // TODO: Implementar métodos CRUD
+  
   async findAll(): Promise<Eleccion[]> {
     return this.eleccionRepository.find();
   }
