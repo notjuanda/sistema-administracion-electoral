@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColum
 import { ApiProperty } from '@nestjs/swagger';
 import { PartidoPolitico } from '../../partido-politico/entities/partido-politico.entity';
 import { Candidato } from '../../candidato/entities/candidato.entity';
+import { Eleccion } from '../../eleccion/entities/eleccion.entity';
+import { Cargo } from '../../cargo/entities/cargo.entity';
 
 @Entity('candidaturas')
 export class Candidatura {
@@ -26,12 +28,26 @@ export class Candidatura {
     @Column({ name: 'partido_id' })
     partidoId: number;
 
+    @ApiProperty({ description: 'Elección a la que pertenece la candidatura', type: () => Eleccion })
+    @ManyToOne(() => Eleccion, { eager: false })
+    @JoinColumn({ name: 'eleccion_id' })
+    eleccion: Eleccion;
+
+    @ApiProperty({ description: 'ID de la elección', example: 1 })
+    @Column({ name: 'eleccion_id' })
+    eleccionId: number;
+
+    @ApiProperty({ description: 'Cargo al que aspira la candidatura', type: () => Cargo })
+    @ManyToOne(() => Cargo, { eager: false })
+    @JoinColumn({ name: 'cargo_id' })
+    cargo: Cargo;
+
     @ApiProperty({ description: 'ID del cargo al que aspira', example: 1 })
     @Column({ name: 'cargo_id' })
     cargoId: number;
 
     @ApiProperty({ description: 'Candidatos de esta candidatura', type: () => [Candidato] })
-    @OneToMany(() => Candidato, candidato => candidato.id)
+    @OneToMany(() => Candidato, candidato => candidato.candidatura)
     candidatos: Candidato[];
 
     @ApiProperty({ description: 'IDs de los candidatos', type: [Number], example: [1, 2] })

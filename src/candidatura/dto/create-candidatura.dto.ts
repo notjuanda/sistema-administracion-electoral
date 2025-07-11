@@ -24,6 +24,10 @@ export class CreateCandidaturaDto {
     @IsInt({ each: true })
     candidatoIds: number[];
 
+    @ApiProperty({ description: 'ID de la elección', example: 1 })
+    @IsInt()
+    eleccionId: number;
+
     @ApiPropertyOptional({ description: 'Estado de la candidatura', example: 'activa' })
     @IsOptional()
     @IsString()

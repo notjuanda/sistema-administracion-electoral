@@ -38,7 +38,25 @@ export class CandidaturaService {
             throw new Error('Partido político no encontrado');
         }
 
-        // Verificar que los candidatos existen
+        const uniqueCandidatos = new Set(createCandidaturaDto.candidatoIds);
+        if (uniqueCandidatos.size !== createCandidaturaDto.candidatoIds.length) {
+            throw new Error('No se puede asignar el mismo candidato más de una vez en la misma candidatura.');
+        }
+
+        if (createCandidaturaDto.candidatoIds && createCandidaturaDto.candidatoIds.length > 0) {
+            for (const candidatoId of createCandidaturaDto.candidatoIds) {
+                const existe = await this.candidaturaRepository
+                    .createQueryBuilder('candidatura')
+                    .where(':candidatoId = ANY(candidatura.candidatoIds)', { candidatoId })
+                    .andWhere('candidatura.eleccionId = :eleccionId', { eleccionId: createCandidaturaDto.eleccionId })
+                    .andWhere('candidatura.cargoId = :cargoId', { cargoId: createCandidaturaDto.cargoId })
+                    .getOne();
+                if (existe) {
+                    throw new Error(`El candidato con ID ${candidatoId} ya está registrado en una candidatura para este cargo y elección.`);
+                }
+            }
+        }
+
         if (createCandidaturaDto.candidatoIds && createCandidaturaDto.candidatoIds.length > 0) {
             for (const candidatoId of createCandidaturaDto.candidatoIds) {
                 const candidato = await this.candidatoService.findOne(candidatoId);
@@ -53,13 +71,11 @@ export class CandidaturaService {
     }
 
     async update(id: number, updateCandidaturaDto: UpdateCandidaturaDto): Promise<Candidatura | null> {
-        // Verificar que la candidatura existe
         const existingCandidatura = await this.findOne(id);
         if (!existingCandidatura) {
             throw new Error('Candidatura no encontrada');
         }
 
-        // Verificar que el partido existe si se está actualizando
         if (updateCandidaturaDto.partidoId) {
             const partido = await this.partidoService.findOne(updateCandidaturaDto.partidoId);
             if (!partido) {
@@ -67,7 +83,6 @@ export class CandidaturaService {
             }
         }
 
-        // Verificar que los candidatos existen si se están actualizando
         if (updateCandidaturaDto.candidatoIds && updateCandidaturaDto.candidatoIds.length > 0) {
             for (const candidatoId of updateCandidaturaDto.candidatoIds) {
                 const candidato = await this.candidatoService.findOne(candidatoId);

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Candidatura } from '../../candidatura/entities/candidatura.entity';
 
 @Entity('candidatos')
 export class Candidato {
@@ -38,6 +39,13 @@ export class Candidato {
     @ApiProperty({ description: 'URL de la foto del candidato', example: 'https://example.com/foto.jpg' })
     @Column({ type: 'varchar', length: 255, nullable: true })
     fotoUrl: string;
+
+    @ManyToOne(() => Candidatura, candidatura => candidatura.candidatos, { nullable: true })
+    @JoinColumn({ name: 'candidatura_id' })
+    candidatura: Candidatura;
+
+    @Column({ name: 'candidatura_id', nullable: true })
+    candidaturaId: number;
 
     @ApiProperty({ description: 'Fecha de creación' })
     @CreateDateColumn()
