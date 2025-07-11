@@ -5,6 +5,7 @@ import { Cargo } from '../cargo/entities/cargo.entity';
 import { Candidatura } from '../candidatura/entities/candidatura.entity';
 import { Candidato } from '../candidato/entities/candidato.entity';
 import { PartidoPolitico } from '../partido-politico/entities/partido-politico.entity';
+import { Papeleta } from './entities/papeleta.entity';
 import { PapeletasService } from './papeletas.service';
 import { PapeletasController } from './papeletas.controller';
 
@@ -15,7 +16,8 @@ import { PapeletasController } from './papeletas.controller';
         Cargo,
         Candidatura,
         Candidato,
-        PartidoPolitico
+        PartidoPolitico,
+        Papeleta
         ])
     ],
     controllers: [PapeletasController],

@@ -32,7 +32,7 @@ import { PapeletasModule } from './papeletas/papeletas.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('DB_SYNCHRONIZE') === 'true',
+        synchronize: true, // Habilitado temporalmente para sincronizar todas las tablas
         logging: configService.get('DB_LOGGING') === 'true',
       }),
       inject: [ConfigService],
